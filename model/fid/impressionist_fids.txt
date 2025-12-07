@@ -1,0 +1,72 @@
+Generator FID at 4x4 Resolution phase 16.7% done: 171.6936492919922
+EMA Generator FID at 4x4 Resolution phase 16.7% done: 184.5818634033203
+Generator FID at 4x4 Resolution phase 33.4% done: 89.7120132446289
+EMA Generator FID at 4x4 Resolution phase 33.4% done: 163.45594787597656
+Generator FID at 4x4 Resolution phase 50.1% done: 119.90477752685547
+EMA Generator FID at 4x4 Resolution phase 50.1% done: 123.51102447509766
+Generator FID at 4x4 Resolution phase 66.8% done: 116.97248840332031
+EMA Generator FID at 4x4 Resolution phase 66.8% done: 91.36517333984375
+Generator FID at 4x4 Resolution phase 83.5% done: 103.7611312866211
+EMA Generator FID at 4x4 Resolution phase 83.5% done: 65.72029876708984
+Generator FID at 8x8 Resolution phase 14.3% done: 52.539466857910156
+EMA Generator FID at 8x8 Resolution phase 14.3% done: 105.20094299316406
+Generator FID at 8x8 Resolution phase 28.6% done: 54.107608795166016
+EMA Generator FID at 8x8 Resolution phase 28.6% done: 119.8598861694336
+Generator FID at 8x8 Resolution phase 42.9% done: 30.897628784179688
+EMA Generator FID at 8x8 Resolution phase 42.9% done: 104.5152359008789
+Generator FID at 8x8 Resolution phase 57.2% done: 34.303672790527344
+EMA Generator FID at 8x8 Resolution phase 57.2% done: 70.91715240478516
+Generator FID at 8x8 Resolution phase 71.6% done: 25.60498809814453
+EMA Generator FID at 8x8 Resolution phase 71.6% done: 45.90993881225586
+Generator FID at 8x8 Resolution phase 85.9% done: 22.524581909179688
+EMA Generator FID at 8x8 Resolution phase 85.9% done: 33.61566162109375
+Generator FID at 8x8 Resolution phase 100.2% done: 18.216262817382812
+EMA Generator FID at 8x8 Resolution phase 100.2% done: 27.044836044311523
+Generator FID at 16x16 Resolution phase 16.7% done: 99.64643859863281
+EMA Generator FID at 16x16 Resolution phase 16.7% done: 99.98888397216797
+Generator FID at 16x16 Resolution phase 33.4% done: 70.04837036132812
+EMA Generator FID at 16x16 Resolution phase 33.4% done: 100.97655487060547
+Generator FID at 16x16 Resolution phase 50.1% done: 137.3079376220703
+EMA Generator FID at 16x16 Resolution phase 50.1% done: 66.79454803466797
+Generator FID at 16x16 Resolution phase 66.7% done: 46.21274948120117
+EMA Generator FID at 16x16 Resolution phase 66.7% done: 37.220176696777344
+Generator FID at 16x16 Resolution phase 83.4% done: 26.45597267150879
+EMA Generator FID at 16x16 Resolution phase 83.4% done: 28.018301010131836
+Generator FID at 32x32 Resolution phase 12.5% done: 150.92552185058594
+EMA Generator FID at 32x32 Resolution phase 12.5% done: 88.34606170654297
+Generator FID at 32x32 Resolution phase 25.0% done: 96.36151123046875
+EMA Generator FID at 32x32 Resolution phase 25.0% done: 67.92202758789062
+Generator FID at 32x32 Resolution phase 37.5% done: 66.2364273071289
+EMA Generator FID at 32x32 Resolution phase 37.5% done: 63.496028900146484
+Generator FID at 32x32 Resolution phase 50.0% done: 51.353187561035156
+EMA Generator FID at 32x32 Resolution phase 50.0% done: 58.26167678833008
+Generator FID at 32x32 Resolution phase 62.5% done: 39.693115234375
+EMA Generator FID at 32x32 Resolution phase 62.5% done: 45.02586364746094
+Generator FID at 32x32 Resolution phase 75.0% done: 34.35235595703125
+EMA Generator FID at 32x32 Resolution phase 75.0% done: 38.69087219238281
+Generator FID at 32x32 Resolution phase 87.5% done: 32.1705207824707
+EMA Generator FID at 32x32 Resolution phase 87.5% done: 43.14167785644531
+Generator FID at 32x32 Resolution phase 100.0% done: 45.56243133544922
+EMA Generator FID at 32x32 Resolution phase 100.0% done: 37.48012161254883
+Generator FID at 64x64 Resolution phase 8.3% done: 107.47205352783203
+EMA Generator FID at 64x64 Resolution phase 8.3% done: 96.57832336425781
+Generator FID at 64x64 Resolution phase 16.7% done: 97.00753021240234
+EMA Generator FID at 64x64 Resolution phase 16.7% done: 68.17427062988281
+Generator FID at 64x64 Resolution phase 25.0% done: 105.16967010498047
+EMA Generator FID at 64x64 Resolution phase 25.0% done: 57.01438522338867
+Generator FID at 64x64 Resolution phase 33.3% done: 45.58304214477539
+EMA Generator FID at 64x64 Resolution phase 33.3% done: 50.46609878540039
+Generator FID at 64x64 Resolution phase 41.7% done: 49.213905334472656
+EMA Generator FID at 64x64 Resolution phase 41.7% done: 44.03884506225586
+Generator FID at 64x64 Resolution phase 50.0% done: 53.00758361816406
+EMA Generator FID at 64x64 Resolution phase 50.0% done: 51.45375442504883
+Generator FID at 64x64 Resolution phase 58.4% done: 59.98572540283203
+EMA Generator FID at 64x64 Resolution phase 58.4% done: 38.81258773803711
+Generator FID at 64x64 Resolution phase 66.7% done: 45.160797119140625
+EMA Generator FID at 64x64 Resolution phase 66.7% done: 37.84798049926758
+Generator FID at 64x64 Resolution phase 75.0% done: 49.759220123291016
+EMA Generator FID at 64x64 Resolution phase 75.0% done: 39.198631286621094
+Generator FID at 64x64 Resolution phase 83.4% done: 47.3689079284668
+EMA Generator FID at 64x64 Resolution phase 83.4% done: 38.610965728759766
+Generator FID at 64x64 Resolution phase 91.7% done: 45.578277587890625
+EMA Generator FID at 64x64 Resolution phase 91.7% done: 40.38441848754883
