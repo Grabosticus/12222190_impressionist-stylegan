@@ -5,6 +5,7 @@ from utils_generator import PixelNorm
 import globals
 import torch.nn.functional as F
 
+
 class MappingNetwork(nn.Module):
     """
     The Mapping Network is the defining difference between a PGGAN and a StyleGAN.
@@ -17,10 +18,18 @@ class MappingNetwork(nn.Module):
     e.g. changing only the hair color also increases the age of the person in the output.
     """
 
-    def __init__(self, z_dim=globals.Z_DIM, w_dim=globals.W_DIM, n_layers=globals.N_LAYERS_MAPPING_NETWORK, lr_mul=globals.LR_MAPPING_NETWORK):
+    def __init__(
+        self,
+        z_dim=globals.Z_DIM,
+        w_dim=globals.W_DIM,
+        n_layers=globals.N_LAYERS_MAPPING_NETWORK,
+        lr_mul=globals.LR_MAPPING_NETWORK,
+    ):
         super().__init__()
         layers = []
-        layers.append(PixelNorm()) # our first layer is Pixel-Wise Feature Normalization
+        layers.append(
+            PixelNorm()
+        )  # our first layer is Pixel-Wise Feature Normalization
         dim_in = z_dim
         for _ in range(n_layers):
             layer = EqualLRLinear(dim_in, w_dim)

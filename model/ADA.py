@@ -1,6 +1,7 @@
 import kornia.augmentation as K
 import torch
 
+
 class ADA:
     """
     Adaptive Discriminator Augmentation.
@@ -9,9 +10,12 @@ class ADA:
     harder. We update the probability of applying these augmentations,
     by estimating if the discriminator is currently too good i.e. overfitting.
     """
+
     def __init__(self):
-        self.p = 0.0 # augmentation probability
-        self.target_rt = 0.6 # target fraction of real images discriminator scores as real
+        self.p = 0.0  # augmentation probability
+        self.target_rt = (
+            0.6  # target fraction of real images discriminator scores as real
+        )
         self.rt_sum = 0.0
         self.batch_count = 0
         self.update_interval = 4
@@ -19,8 +23,10 @@ class ADA:
         self.aug = K.AugmentationSequential(
             K.RandomHorizontalFlip(p=1.0),
             K.RandomRotation(degrees=10, p=1.0),
-            K.RandomAffine(degrees=0, translate=(0.125, 0.125), scale=(0.9, 1.1), p=1.0),
-            K.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1, p=1.0)
+            K.RandomAffine(
+                degrees=0, translate=(0.125, 0.125), scale=(0.9, 1.1), p=1.0
+            ),
+            K.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1, p=1.0),
         )
 
     def augment(self, images):
@@ -28,7 +34,7 @@ class ADA:
             return self.aug(images)
         else:
             return images
-    
+
     def update_p(self, rt, batch_size):
         self.rt_sum += rt
         self.batch_count += 1

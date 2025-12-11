@@ -2,9 +2,10 @@ import torch
 import torch.nn as nn
 import math
 import globals
-from utils import *
+from utils import EqualLRConv2d, EqualLRLinear, linear_interpolation
 from utils_discriminator import *
 import torch.nn.functional as F
+
 
 class Discriminator(nn.Module):
     """
@@ -22,29 +23,35 @@ class Discriminator(nn.Module):
         # the discriminator is a mirror of the generator. We start from high resolution and go down
         for i in range(int(math.log2(max_res)), 2, -1):
             current_resolution = 2**i
-            current_channels = self.n_channels[current_resolution] # the num of channels used at this resolution layer
+            current_channels = self.n_channels[
+                current_resolution
+            ]  # the num of channels used at this resolution layer
 
-            # since we produce an rgb image at the end of each resolution's blocks in the Generator, we first use a FromRGB block here
             self.from_rgbs[str(current_resolution)] = FromRGB(current_channels)
 
             # output_channels is the number of channels used in the next (lower) resolution layer
-            output_channels = max(globals.FLOOR_CHANNELS, self.n_channels[current_resolution // 2])
-            self.blocks[str(current_resolution)] = DiscriminatorBlock(current_channels, output_channels, downsample=True)
+            output_channels = max(
+                globals.FLOOR_CHANNELS, self.n_channels[current_resolution // 2]
+            )
+            self.blocks[str(current_resolution)] = DiscriminatorBlock(
+                current_channels, output_channels, downsample=True
+            )
 
         # the final layer in the discriminator produces a prediction on the "realness" of the input image
-        self.final_from_rgb = FromRGB(base_channels) # the last from rgb output our base channels (where the Generator start from)
-        self.minibatch_std = MiniBatchStandardDeviation() # adds one channel to the output of the final FromRGB
+        self.final_from_rgb = FromRGB(base_channels)
+        self.minibatch_std = (
+            MiniBatchStandardDeviation()
+        )  # adds one channel to the output of the final FromRGB
         self.final_block = nn.Sequential(
-            DiscriminatorBlock(base_channels+1, base_channels, downsample=False),
+            DiscriminatorBlock(base_channels + 1, base_channels, downsample=False),
             EqualLRConv2d(base_channels, base_channels, 3, padding=1),
             nn.LeakyReLU(0.2, inplace=True),
             nn.Flatten(),
-            EqualLRLinear(base_channels*(4*4), 1)
+            EqualLRLinear(base_channels * (4 * 4), 1),
         )
 
         self.current_res = 4
-        self.register_buffer('layer_opacity', torch.tensor(1.0))
-
+        self.register_buffer("layer_opacity", torch.tensor(1.0))
 
     def fade_in(self, new_res):
         """
@@ -55,14 +62,12 @@ class Discriminator(nn.Module):
         self.current_res = new_res
         self.layer_opacity.fill_(0)
 
-
     def set_layer_opacity(self, layer_opacity):
         self.layer_opacity.fill_(float(layer_opacity))
 
-
     def forward(self, x):
         current_resolution = x.shape[-1]
-        
+
         # here we fade in the current highest resolution layer
         if current_resolution != 4:
             from_rgb = self.from_rgbs[str(current_resolution)]
@@ -74,16 +79,25 @@ class Discriminator(nn.Module):
             x_new = block(x_new)
 
             # here we interpolate the output of the previous resolution layer with the one of the current layer
-            x_down = F.interpolate(x, scale_factor=0.5, mode=globals.INTERPOLATION_MODE, align_corners=False)
+            x_down = F.interpolate(
+                x,
+                scale_factor=0.5,
+                mode=globals.INTERPOLATION_MODE,
+                align_corners=False,
+            )
             down_resolution = current_resolution // 2
-            prev_from_rgb = self.from_rgbs[str(down_resolution)] if (down_resolution > 4) else self.final_from_rgb
+            prev_from_rgb = (
+                self.from_rgbs[str(down_resolution)]
+                if (down_resolution > 4)
+                else self.final_from_rgb
+            )
             x_prev = prev_from_rgb(x_down)
             x_prev = F.leaky_relu(x_prev, 0.2, inplace=True)
 
             if self.layer_opacity.item() < 1.0:
                 x = linear_interpolation(x_prev, x_new, self.layer_opacity.item())
             else:
-                x = x_new # we already faded in the new layer completely
+                x = x_new  # we already faded in the new layer completely
 
             current_resolution //= 2
             while current_resolution > 4:

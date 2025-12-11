@@ -20,6 +20,7 @@ class EqualLRConv2d(nn.Module):
     each layer with approximately the same learning rate, regardless of the layers size
     (and therefore its effect on the gradient)
     """
+
     def __init__(self, in_channels, out_channels, kernel_size, padding=0):
         super().__init__()
         self.conv = nn.Conv2d(in_channels, out_channels, kernel_size, padding=padding)
@@ -35,6 +36,7 @@ class EqualLRLinear(nn.Module):
     """
     This is a linear layer that uses Equalized Learning Rate.
     """
+
     def __init__(self, in_dim, out_dim):
         super().__init__()
         self.linear = nn.Linear(in_dim, out_dim)
@@ -43,33 +45,40 @@ class EqualLRLinear(nn.Module):
 
     def forward(self, input):
         return self.linear(input * self.scale)
-    
+
 
 def get_generator_params(generator):
     """
-    The learning rate for the mapping network in the generator is lower than that for the 
-    generator itself. Therefore we need to get the parameters of the mapping network and the 
+    The learning rate for the mapping network in the generator is lower than that for the
+    generator itself. Therefore we need to get the parameters of the mapping network and the
     actual generator seperately
     """
     mapping_params = []
     generator_params = []
     for name, param in generator.named_parameters():
-        if 'mapping' in name:
+        if "mapping" in name:
             mapping_params.append(param)
         else:
             generator_params.append(param)
     return mapping_params, generator_params
 
 
-def compute_fid(G, G_EMA, dataset, res, percent_this_phase, fid : FrechetInceptionDistance, output_file="fid/fids.txt", max_imgs : int | None = None):
+def compute_fid(
+    G,
+    G_EMA,
+    dataset,
+    res,
+    percent_this_phase,
+    fid: FrechetInceptionDistance,
+    output_file="fid/fids.txt",
+    max_imgs: int | None = None,
+):
     """
-    Here we compute the Frechet Inception Distance i.e. the distance between our real dataset and the generated images. 
+    Here we compute the Frechet Inception Distance i.e. the distance between our real dataset and the generated images.
     Lower FID values mean our generator performs better.
     """
     os.makedirs("fid", exist_ok=True)
-    transform = transforms.Compose([
-        transforms.Resize((299, 299))
-    ])
+    transform = transforms.Compose([transforms.Resize((299, 299))])
     batch_size = globals.BATCH_SIZES_PER_RES[res]
 
     fid.reset()
@@ -78,17 +87,19 @@ def compute_fid(G, G_EMA, dataset, res, percent_this_phase, fid : FrechetIncepti
 
     # Normal Generator FID
     # here we add the real images from the dataset
-    dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, num_workers=4)
+    dataloader = torch.utils.data.DataLoader(
+        dataset, batch_size=batch_size, num_workers=4
+    )
     dataloader_cut = len(dataloader)
     if max_imgs:
         dataloader_cut = max_imgs // batch_size
     for i, batch in enumerate(dataloader):
         if i > dataloader_cut:
             break
-        real_images = transform(batch) # FID needs images to be 299x299
+        real_images = transform(batch)  # FID needs images to be 299x299
         real_images = real_images.to(globals.DEVICE)
         # FID needs images to be in [0,255]
-        real_images = (real_images + 1) / 2.0 
+        real_images = (real_images + 1) / 2.0
         real_images = (real_images * 255).clamp(0, 255).to(torch.uint8)
         fid.update(real_images, real=True)
 
@@ -102,10 +113,12 @@ def compute_fid(G, G_EMA, dataset, res, percent_this_phase, fid : FrechetIncepti
             fake_images = (fake_images + 1) / 2.0
             fake_images = (fake_images * 255).clamp(0, 255).to(torch.uint8)
             fid.update(fake_images, real=False)
-    
+
     fid_score = fid.compute()
-    with open(output_file, 'a') as f:
-        f.write(f"Generator FID at {res}x{res} Resolution phase {percent_this_phase:.1f}% done: {fid_score.item()}\n")
+    with open(output_file, "a") as f:
+        f.write(
+            f"Generator FID at {res}x{res} Resolution phase {percent_this_phase:.1f}% done: {fid_score.item()}\n"
+        )
     result_fids["G"] = fid_score.item()
 
     fid.reset()
@@ -131,12 +144,14 @@ def compute_fid(G, G_EMA, dataset, res, percent_this_phase, fid : FrechetIncepti
             fake_images = (fake_images + 1) / 2.0
             fake_images = (fake_images * 255).clamp(0, 255).to(torch.uint8)
             fid.update(fake_images, real=False)
-    
+
     fid_score = fid.compute()
-    with open(output_file, 'a') as f:
-        f.write(f"EMA Generator FID at {res}x{res} Resolution phase {percent_this_phase:.1f}% done: {fid_score.item()}\n")
+    with open(output_file, "a") as f:
+        f.write(
+            f"EMA Generator FID at {res}x{res} Resolution phase {percent_this_phase:.1f}% done: {fid_score.item()}\n"
+        )
     result_fids["G_EMA"] = fid_score.item()
-    
+
     return result_fids
 
 
@@ -149,7 +164,7 @@ def generate_grid_image(G, fid_score, resolution, output_dir="results"):
     n_cols = 32
     n_images = n_rows * n_cols
 
-    grid_width  = n_cols * resolution
+    grid_width = n_cols * resolution
     grid_height = n_rows * resolution
     canvas = Image.new("RGB", (grid_width, grid_height))
     generated = 0
@@ -178,5 +193,3 @@ def generate_grid_image(G, fid_score, resolution, output_dir="results"):
 
         generated += current_batch
     canvas.save(f"{output_dir}/{resolution}x{resolution}_FID_{fid_score}.png")
-
-
