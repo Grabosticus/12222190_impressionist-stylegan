@@ -26,6 +26,7 @@ Here I will provide a short description of all directories and files in the proj
     - training_imgs... Contains generated images throughout different training stages
     - results... Contains a grid of images produced by the final Generator/EMA Generator
     - fid... Contains text files that track the FID score of the model during different stages of training
+    - test_stylegan.py... A Python Script with a few sanity check tests on the model architecture
 - impressionist... The directory with the dataset images.
     - {Id}.jpg... The the image with id {Id}
 

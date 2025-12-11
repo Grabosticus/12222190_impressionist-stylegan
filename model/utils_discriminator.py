@@ -4,7 +4,6 @@ import globals
 import torch.nn.functional as F
 from utils import EqualLRConv2d
 from ADA import ADA
-from torch.amp import autocast
 
 class FromRGB(nn.Module):
     """
@@ -161,18 +160,17 @@ def d_loss_non_saturating_r1(D, real_imgs, fake_imgs, d_step, ada: ADA, gamma=10
     r1_penalty = 0.0
 
     if d_step % 16 == 0:
-        with autocast(device_type=globals.DEVICE, enabled=False): # We need to disable mixed precision for R1, else NaNs will appear
-            real_imgs_r1 = real_imgs.detach().requires_grad_(True)
-            real_pred_r1 = D(real_imgs_r1)
-            grad_real = torch.autograd.grad(
-                outputs=real_pred_r1.sum(),
-                inputs = real_imgs_r1,
-                create_graph=True,
-                retain_graph=True
-            )[0]
+        real_imgs_r1 = real_imgs.detach().requires_grad_(True)
+        real_pred_r1 = D(real_imgs_r1)
+        grad_real = torch.autograd.grad(
+            outputs=real_pred_r1.sum(),
+            inputs = real_imgs_r1,
+            create_graph=True,
+            retain_graph=True
+        )[0]
 
-            r1 = grad_real.pow(2).reshape(grad_real.shape[0], -1).sum(1).mean()
-            r1_penalty = (gamma / 2) * r1 * 16
+        r1 = grad_real.pow(2).reshape(grad_real.shape[0], -1).sum(1).mean()
+        r1_penalty = (gamma / 2) * r1 * 16
 
     D_loss = logistic_loss + r1_penalty
 

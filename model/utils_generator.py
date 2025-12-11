@@ -112,7 +112,7 @@ class ToRGB(nn.Module):
         x = self.conv(x)
         return x
 
-def applyExponentialMovingAverage(G, G_ema):
+def apply_exponential_moving_average(G, G_ema):
     """
     We apply this after every Generator step, to prevent weight oscillation.
     We then use the EMA Generator for evaluation purposes.
