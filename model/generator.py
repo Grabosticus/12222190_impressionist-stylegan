@@ -11,7 +11,7 @@ import torch.nn.functional as F
 class Generator(nn.Module):
     """
     One of the two main components of StyleGAN. This Generator builds upon the Generator of a
-    PGGAN. It receives a constant learned input vector as input and adds random noise to it.
+    PGGAN. It receives a constant learned input vector as input.
     """
     def __init__(self, z_dim=globals.Z_DIM, w_dim=globals.W_DIM, base_channels=globals.BASE_CHANNELS, max_res=globals.MAX_RES):
         super().__init__()

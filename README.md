@@ -32,7 +32,8 @@ Here I will provide a short description of all directories and files in the proj
 
 ## Running the application
 **Python Version: 3.10** \
-Here are some conda commands to initialize the virtual environment and install all needed packages.
+Here are some conda commands to initialize the virtual environment and install all needed packages. The third line installs PyTorch with CUDA support, which is only available for NVIDIA GPUs. If you don't have a NVIDIA GPU, just run `conda install pytorch torchvision`. \
+WARNING: The model will run on the CPU in this case. I don't have experience in enabling GPU training for non-NVIDIA GPUs.
 
 ```
 conda create -n impressionist-stylegan python=3.10
@@ -44,7 +45,7 @@ pip install -r requirements.txt
 In the GitHub repository, there is a release **Impressionist Artworks v1.0** which contains the dataset images and weights of a pretrained StyleGAN. Unpack the images into the main directory of the repository. The main directory should now contain a directory called `impressionist`. The weights file **ada_stylegan_64_more_channels.pth** should be saved in a directory called `weights`
 
 ### Running the preprocessing K-Means script
-Keep in mind, that is isn't required to run the preprocessing script. Its result - **filtered_impressionist_clusters_2.csv**  - is already in the main directory. If you still want to do it however, you can run the following commands:
+Keep in mind, that it isn't required to run the preprocessing script. Its result - **filtered_impressionist_clusters_2.csv**  - is already in the main directory. If you still want to do it however, you can run the following commands:
 
 ```
 conda activate impressionist-stylegan
@@ -108,10 +109,17 @@ In early training runs I used the Wasserstein Loss function, but after I impleme
 ### Exponential Moving Average (EMA) Generator
 I used a EMA Generator, whose weights are a moving average of the Generator weights. This makes the EMA Generator weight changes smoother than those for the original Generator, resulting in better overall performance. 
 
-
 ### Hyperparameters
 I based my hyperparameter selection on hyperparameters used in official StyleGAN implementations.
 
+
+## Performing Sanity Check Tests
+To perform the sanity check tests in `test_stylegan.py`, run the following commands:
+```
+conda activate impressionist-stylegan
+cd model
+python test_stylegan.py
+```
 
 ## References
 [1]: WikiArt, https://www.wikiart.org/ \

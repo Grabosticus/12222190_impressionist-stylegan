@@ -12,10 +12,7 @@ class FromRGB(nn.Module):
     """
     def __init__(self, out_ch):
         super().__init__()
-        """
-        self.conv = nn.Conv2d(3, out_ch, 1)
-        nn.init.kaiming_normal_(self.conv.weight, a=0.2) 
-        """
+
         self.conv = EqualLRConv2d(3, out_ch, 1)
     
     def forward(self, x):
@@ -31,12 +28,6 @@ class DiscriminatorBlock(nn.Module):
     def __init__(self, in_ch, out_ch, downsample=True):
         super().__init__()
 
-        """
-        self.conv1 = nn.Conv2d(in_ch, in_ch, 3, padding=1)
-        nn.init.kaiming_normal_(self.conv1.weight, a=0.2)
-        self.conv2 = nn.Conv2d(in_ch, out_ch, 3, padding=1)
-        nn.init.kaiming_normal_(self.conv2.weight, a=0.2)
-        """
         self.conv1 = EqualLRConv2d(in_ch, in_ch, 3, padding=1)
         self.conv2 = EqualLRConv2d(in_ch, out_ch, 3, padding=1)
         self.downsample = downsample
@@ -78,67 +69,11 @@ class MiniBatchStandardDeviation(nn.Module):
         means_of_stddev = stddev.mean(dim=[1,2,3], keepdim=True) # the actual average stddev for this group (a single value)
         means_of_stddev = means_of_stddev.repeat(actual_group_size, 1, height, width) # we just resize the average stddev to match our input shape
         return torch.cat([x, means_of_stddev], dim=1)
-
-
-def d_loss_wgan_gp_ada(discriminator, real_images, fake_images, ada : ADA, gp_factor=10, log=False):
-    """
-    This is the loss function used in the Discriminator.
-    It is Wasserstein-Loss with Gradient Penalty.
-    This loss function works by computing the Wasserstein distance between the outputs of the Discriminator
-    on the fake images and the real images. 
-    For the Wasserstein loss function to work we need to enfore something called the "1-Lipschitz constraint" 
-    This constraint essentially means that the norm of our gradient have to be
-    smaller than or equal to 1. To enfore this, we use something called a "Gradient Penalty". This gradient penalty
-    is computed by first creating a new image that an interpolated version of the real and fake images. Then we compute
-    the gradient magnitudes of the discriminator output on these images, subtract 1, and then square it. Then we take the mean over
-    these values and multiply it with a factor. Since, we want the gradient to have a magnitude of at most 1, this
-    gradient penalty equals 0, if the mean of all gradient magnitudes is 1.
-    """
-
-    # we calculate the scores on the augmented images
-    real_augmented = ada.augment(real_images)
-    fake_augmented = ada.augment(fake_images)
-
-    real_scores = discriminator(real_augmented)
-    fake_scores = discriminator(fake_augmented)
-
-    wasserstein_distance = fake_scores.mean() - real_scores.mean()
     
-    # gradient penalty calculation
-    # the coefficient is randomly taken from a Uniform distribution. 
-    interpolation_coefficient = torch.rand(real_augmented.size(0), 1, 1, 1, requires_grad=True, device=globals.DEVICE)
-    interpolated_images = interpolation_coefficient * real_augmented + (1 - interpolation_coefficient) * fake_augmented
-    interpolated_images.requires_grad_(True)
-
-    scores_interpolated = discriminator(interpolated_images)
-    gradient_interpolated = torch.autograd.grad(
-        outputs=scores_interpolated.sum(),
-        inputs=interpolated_images,
-        create_graph=True,
-        retain_graph=True,
-        only_inputs=True
-    )[0]
-
-    gradient_magnitude = gradient_interpolated.view(real_augmented.size(0), -1).norm(2, dim=1)
-    gradient_penalty = ((gradient_magnitude - 1) ** 2).mean()
-
-    # here we update the augmentation probability
-    rt = (real_scores > 0).float().mean().item()
-    ada.update_p(rt, real_augmented.size(0))
-    
-    # I added a small penalty to the discriminator loss to keep outputs near 0
-    # This should stabilize the generator loss
-    discriminator_loss = wasserstein_distance + gp_factor * gradient_penalty + 1e-3 * (real_scores ** 2).mean()
-    if log:
-        print(f"REAL SCORES: {real_scores[:10]}")
-        print(f"FAKE SCORES: {fake_scores[:10]}")
-        print(f"GRADIENT MAGNITUDE: {gradient_magnitude[:10]}")
-        print(f"DISCRIMINATOR_LOSS: {discriminator_loss}")
-        print(f"ADA rt: {rt:.4f}, p: {ada.p:.4f}")
-    return discriminator_loss
 
 def d_loss_non_saturating_r1(D, real_imgs, fake_imgs, d_step, ada: ADA, gamma=10, log=False):
     """
+    The loss function of the Discriminator
     I originally used WGAN-GP, but ADA didn't work with it, since almost all signs
     of the D output were always negative, even if D overfitted heavily.
     """
