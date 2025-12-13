@@ -5,11 +5,11 @@ This readme contains informations about the project as well as changes made to i
 Here I will provide a short description of all directories and files in the project. For more information on the code, see the files themselves. Each file contains comments describing the code and what it is used for.
 
 - requirements.txt... The packages needed to run the application
-- filtered_impressionist_clusters_2.csv... The CSV file containing the dataset
+- filtered_impressionist_clusters.csv... The CSV file containing the dataset. You can get the file from the **Impressionist Artworks v1.0** GitHub Release
 - preprocessing... Directory with code used to preprocess the dataset
     - similarity_clustering.py... Python Script for K-Means clustering
     - clusters... Contains images and examples of the clusters
-    - filtered_impressionist.csv... The CSV dataset without clusters
+    - filtered_impressionist_noclusters.csv... The CSV dataset without clusters. You can get the file from the **Impressionist Artworks v1.0** GitHub Release
 - model... Directory with main model code
     - utils.py... Contains utility functions for the whole model
     - utils_generator.py... Contains utility functions for the Generator
@@ -42,10 +42,10 @@ conda install pytorch torchvision pytorch-cuda=12.1 -c pytorch -c nvidia
 pip install -r requirements.txt
 ```
 
-In the GitHub repository, there is a release **Impressionist Artworks v1.0** which contains the dataset images and weights of a pretrained StyleGAN. Unpack the images into the main directory of the repository. The main directory should now contain a directory called `impressionist`. The weights file **ada_stylegan_64_more_channels.pth** should be saved in a directory called `weights`
+In the GitHub repository, there is a release **Impressionist Artworks v1.0** which contains the dataset images, the dataset csv with and without clusters, and weights of a pretrained StyleGAN. Unpack the images and the csv with the clusters into the root directory of the repository. The main directory should now contain a directory called `impressionist` and a file `filtered_impressionist_clusters.csv`. The weights file **ada_stylegan_64_more_channels.pth** should be saved in a subdirectory of the root directory called `weights`
 
 ### Running the preprocessing K-Means script
-Keep in mind, that it isn't required to run the preprocessing script. Its result - **filtered_impressionist_clusters_2.csv**  - is already in the main directory. If you still want to do it however, you can run the following commands:
+Keep in mind, that it isn't required to run the preprocessing script. Its result - **filtered_impressionist_clusters.csv**  - is already available under the GitHub release. If you still want to do it however, you can do the following. Download `filtered_impressionist.csv` from the GitHub release and put it in the `preprocessing` directory. Then run the following commands:
 
 ```
 conda activate impressionist-stylegan

@@ -154,7 +154,7 @@ def visualize_clusters(
 
 visualize_clusters(image_paths, embeddings, labels, aspect_ratios)
 
-CSV = "filtered_impressionist.csv"
+CSV = "filtered_impressionist_noclusters.csv"
 df = pd.read_csv(CSV)
 ids = [int(os.path.splitext(os.path.basename(p))[0]) for p in image_paths]
 cluster_map = dict(zip(ids, labels))

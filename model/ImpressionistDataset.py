@@ -13,7 +13,7 @@ class ImpressionistDataset(torch.utils.data.Dataset):
     """
 
     def __init__(self, resolution, cluster_ind, root=None):
-        df = pd.read_csv("../filtered_impressionist_clusters_2.csv")
+        df = pd.read_csv("../filtered_impressionist_clusters.csv")
         cluster = df[df["Cluster_ind"] == cluster_ind]
         cluster_ids = cluster["Id"].tolist()
         cluster_filenames = [f"{i}.jpg" for i in cluster_ids]
