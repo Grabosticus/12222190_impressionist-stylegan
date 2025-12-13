@@ -45,6 +45,8 @@ pip install -r requirements.txt
 In the GitHub repository, there is a release **Impressionist Artworks v1.0** which contains the dataset images, the dataset csv with and without clusters, and weights of a pretrained StyleGAN. Unpack the images and the csv with the clusters into the root directory of the repository. The main directory should now contain a directory called `impressionist` and a file `filtered_impressionist_clusters.csv`. The weights file `ada_stylegan_64_more_channels.pth` should be saved in a subdirectory of the root directory called `weights`
 
 ### Running the preprocessing K-Means script
+**UPDATE 13.12.2025**: Due to a new critical security vulnerability in torch.load(), the script `similarity_clustering.py` is currently only runnable for PyTorch versions >2.6. 
+
 Keep in mind, that it isn't required to run the preprocessing script. Its result - `filtered_impressionist_clusters.csv` - is already available under the GitHub release. If you still want to do it however, you can do the following. Download `filtered_impressionist_noclusters.csv` from the GitHub release and put it in the `preprocessing` directory. Then run the following commands:
 
 ```
