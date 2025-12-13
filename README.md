@@ -4,7 +4,8 @@ This readme contains information about the project as well as changes made to it
 ## Project Structure
 Here I will provide a short description of all directories and files in the project. For more information on the code, see the files themselves. Each file contains comments describing the code and what it is used for.
 
-- requirements.txt... The packages needed to run the application
+- environment_cpu.yml... A YML file containing the required packages for the application to work, if you don't have a NVIDIA GPU
+- environment_nvidia.yml... A YML file containing the required packages for the application to work with CUDA support
 - filtered_impressionist_clusters.csv... The CSV file containing the dataset. You can get the file from the **Impressionist Artworks v1.0** GitHub Release
 - preprocessing... Directory with code used to preprocess the dataset
     - similarity_clustering.py... Python Script for K-Means clustering
@@ -32,21 +33,16 @@ Here I will provide a short description of all directories and files in the proj
 
 ## Running the application
 **Python Version: 3.10** \
-Here are some conda commands to initialize the virtual environment and install all needed packages. Run these in the root directory of this repository. The third line installs PyTorch with CUDA support, which is only available for NVIDIA GPUs. If you don't have a NVIDIA GPU, just run `conda install pytorch torchvision`. \
-WARNING: The model will run on the CPU in this case. I don't have experience in enabling GPU training for non-NVIDIA GPUs.
+Here are the conda commands you need to run to start the application. If you have a NVIDIA GPU you may install `environment_nvidia.yml`, else you need to install `environment_cpu.yml`
 
 ```
-conda create -n impressionist-stylegan python=3.10
+conda env create -f environment_nvidia.yml
 conda activate impressionist-stylegan
-conda install pytorch torchvision pytorch-cuda=12.1 -c pytorch -c nvidia
-pip install -r requirements.txt
 ```
 
 In the GitHub repository, there is a release **Impressionist Artworks v1.0** which contains the dataset images, the dataset csv with and without clusters, and weights of a pretrained StyleGAN. Unpack the images and the csv with the clusters into the root directory of the repository. The main directory should now contain a directory called `impressionist` and a file `filtered_impressionist_clusters.csv`. The weights file `ada_stylegan_64_more_channels.pth` should be saved in a subdirectory of the root directory called `weights`
 
 ### Running the preprocessing K-Means script
-**UPDATE 13.12.2025**: Due to a new critical security vulnerability in torch.load(), the script `similarity_clustering.py` is currently only runnable for PyTorch versions >2.6. I tried migrating the application to this new version, but this broke it.
-
 Keep in mind, that it isn't required to run the preprocessing script. Its result - `filtered_impressionist_clusters.csv` - is already available under the GitHub release. If you still want to do it however, you can do the following. Download `filtered_impressionist_noclusters.csv` from the GitHub release and put it in the `preprocessing` directory. Then run the following commands:
 
 ```

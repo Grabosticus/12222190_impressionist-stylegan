@@ -1,0 +1,29 @@
+name: impressionist-stylegan
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+
+  - pytorch=2.5.1
+  - torchvision
+  - torchaudio
+  - pytorch-cuda=12.1
+
+  - pillow
+  - matplotlib
+  - tqdm
+  - ipykernel
+  - kornia
+  - hdbscan
+  - scikit-learn
+  - umap-learn
+  - pandas
+  - torchmetrics
+  - transformers=4.51.3
+
+  - pip:
+      - torch-fidelity
