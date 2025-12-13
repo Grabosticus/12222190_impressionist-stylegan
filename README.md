@@ -45,7 +45,7 @@ pip install -r requirements.txt
 In the GitHub repository, there is a release **Impressionist Artworks v1.0** which contains the dataset images, the dataset csv with and without clusters, and weights of a pretrained StyleGAN. Unpack the images and the csv with the clusters into the root directory of the repository. The main directory should now contain a directory called `impressionist` and a file `filtered_impressionist_clusters.csv`. The weights file **ada_stylegan_64_more_channels.pth** should be saved in a subdirectory of the root directory called `weights`
 
 ### Running the preprocessing K-Means script
-Keep in mind, that it isn't required to run the preprocessing script. Its result - **filtered_impressionist_clusters.csv**  - is already available under the GitHub release. If you still want to do it however, you can do the following. Download `filtered_impressionist.csv` from the GitHub release and put it in the `preprocessing` directory. Then run the following commands:
+Keep in mind, that it isn't required to run the preprocessing script. Its result - **filtered_impressionist_clusters.csv**  - is already available under the GitHub release. If you still want to do it however, you can do the following. Download `filtered_impressionist_noclusters.csv` from the GitHub release and put it in the `preprocessing` directory. Then run the following commands:
 
 ```
 conda activate impressionist-stylegan
@@ -53,8 +53,8 @@ cd preprocessing
 python similarity_clustering.py
 ```
 
-### Running the StyleGAN Notebook
-Run the notebook from top to bottom
+### Running the StyleGAN Training Notebook
+Just run individual notebook cells. At the end of the notebook there is a function with which you can save your new StyleGAN weights in the `weights` directory. The last section loads the weights of my pretrained StyleGAN (available under `ada_stylegan_64_more_channels.pth` in the **Impressionist Artworks v1.0** GitHub release) and produces a grid image similar to the one found in `model/results`.
 
 ## Summary
 ### Error Metric: Frechet Inception Distance (FID)
