@@ -85,16 +85,16 @@ By the end of training, the EMA Generator achieved an FID of 40.38. You can see 
 Below is a breakdown of the hours I spent on the individual tasks specified in the original project proposal. \
 Format: `TASK: HOURS_SPENT (INCREASE_COMPARED_TO_ORIGINAL_ESTIMATE)`
 
-- Researching project ideas: 2h \
-- Planning project: 2h \
-- Finding dataset sources: 6h (+4h) \
-- Writing code for dataset collection: 5h (+1h) \
-- Collecting all dataset entries: 10h \
-- Refining dataset: 4h \
-- Building model: 40h (+30h) \
-- Training the model: 25h (+10h) \
-- Building an application to present the results: NOT DONE YET \
-- Preparing the final report and presentation: NOT DONE YET 
+- Researching project ideas: 2h
+- Planning project: 2h
+- Finding dataset sources: 6h (+4h)
+- Writing code for dataset collection: 5h (+1h)
+- Collecting all dataset entries: 10h
+- Refining dataset: 4h
+- Building model: 40h (+30h)
+- Training the model: 25h (+10h)
+- Building an application to present the results: NOT DONE YET
+- Preparing the final report and presentation: NOT DONE YET
 
 ## Dataset
 I collected a dataset of 23,328 impressionist artworks. My original plan was to rely primarily on museum APIs, but I found that they did not provide enough works to build a dataset of the desired size. As a result, I switched to collecting the images from WikiArt [1]. This approach was especially convenient because WikiArt provides text lists of artworks for a given style, along with metadata such as the artwork’s genre.
