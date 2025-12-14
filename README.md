@@ -1,49 +1,60 @@
 # Impressionist StyleGAN
-This readme contains information about the project as well as changes made to it.
+
+This README provides an overview of the project and documents the changes made to it.
 
 ## Project Structure
-Here I will provide a short description of all directories and files in the project. For more information on the code, see the files themselves. Each file contains comments describing the code and what it is used for.
 
-- environment_cpu.yml... A YML file containing the required packages for the application to work, if you don't have a NVIDIA GPU
-- environment_nvidia.yml... A YML file containing the required packages for the application to work with CUDA support
-- filtered_impressionist_clusters.csv... The CSV file containing the dataset. You can get the file from the **Impressionist Artworks v1.0** GitHub Release
-- preprocessing... Directory with code used to preprocess the dataset
-    - similarity_clustering.py... Python Script for K-Means clustering
-    - clusters... Contains images and examples of the clusters
-    - filtered_impressionist_noclusters.csv... The CSV dataset without clusters. You can get the file from the **Impressionist Artworks v1.0** GitHub Release
-- model... Directory with main model code
-    - utils.py... Contains utility functions for the whole model
-    - utils_generator.py... Contains utility functions for the Generator
-    - utils_discriminator.py... Contians utility functions for the Discriminator
-    - MNISTTrain.ipynb... The notebook to train the StyleGAN on the MNIST Dataset
-    - MNISTDataset.py... The MNIST dataset as a PyTorch dataset
-    - mapping_network.py... The Mapping Network used in the Generator
-    - ImpressionistTrain.ipynb... The notebook to train the StyleGAN on the impressionist dataset
-    - globals.py... The hyperparameters used for the model
-    - generator.py... Contains the code for the StyleGAN Generator
-    - discriminator.py... Contains the code for the StyleGAN Discriminator
-    - ADA.py... Contains the code for Adaptive Discriminator Augmentation
-    - weights... The directoy in which the model weights are saved
-    - training_imgs... Contains generated images throughout different training stages
-    - results... Contains a grid of images produced by the final Generator/EMA Generator
-    - fid... Contains text files that track the FID score of the model during different stages of training
-    - test_stylegan.py... A Python Script with a few sanity check tests on the model architecture
-- impressionist... The directory with the dataset images.
-    - {Id}.jpg... The the image with id {Id}
+Below is a brief description of the project’s directories and files. For more details, refer to the code itself—each file includes comments explaining its purpose and usage.
+
+- **environment_cpu.yml** — YAML file listing the required packages to run the application *without* an NVIDIA GPU.
+- **environment_nvidia.yml** — YAML file listing the required packages to run the application with CUDA support.
+- **filtered_impressionist_clusters.csv** — CSV file containing the dataset. You can download it from the **Impressionist Artworks v1.0** GitHub Release.
+
+- **preprocessing/** — Code used to preprocess the dataset.
+  - **similarity_clustering.py** — Python script for K-Means clustering.
+  - **clusters/** — Images and example outputs for the generated clusters.
+  - **filtered_impressionist_noclusters.csv** — CSV dataset without clusters. You can download it from the **Impressionist Artworks v1.0** GitHub Release.
+
+- **model/** — Main model implementation.
+  - **utils.py** — Utility functions used across the model.
+  - **utils_generator.py** — Utility functions specific to the Generator.
+  - **utils_discriminator.py** — Utility functions specific to the Discriminator.
+  - **MNISTTrain.ipynb** — Notebook for training StyleGAN on the MNIST dataset.
+  - **MNISTDataset.py** — MNIST dataset implementation as a PyTorch `Dataset`.
+  - **mapping_network.py** — Mapping Network used in the Generator.
+  - **ImpressionistTrain.ipynb** — Notebook for training StyleGAN on the impressionist dataset.
+  - **globals.py** — Model hyperparameters.
+  - **generator.py** — StyleGAN Generator implementation.
+  - **discriminator.py** — StyleGAN Discriminator implementation.
+  - **ADA.py** — Adaptive Discriminator Augmentation implementation.
+  - **weights/** — Directory where model weights are saved.
+  - **training_imgs/** — Generated images saved throughout different training stages.
+  - **results/** — Image grids produced by the final Generator / EMA Generator.
+  - **fid/** — Text files tracking the model’s FID score across different training stages.
+  - **test_stylegan.py** — Python script containing a few sanity-check tests for the model architecture.
+
+- **impressionist/** — Directory containing the dataset images. You can download it from the **Impressionist Artworks v1.0** GitHub Release.
+  - **{Id}.jpg** — Image file with ID `{Id}`.
 
 ## Running the application
 **Python Version: 3.10** \
-Here are the conda commands you need to run to start the application. If you have a NVIDIA GPU you may install `environment_nvidia.yml`, else you need to install `environment_cpu.yml`
+Below are the Conda commands needed to set up and run the application. If you have an NVIDIA GPU, install `environment_nvidia.yml`, otherwise install `environment_cpu.yml`.
 
 ```
 conda env create -f environment_nvidia.yml
 conda activate impressionist-stylegan
 ```
 
-In the GitHub repository, there is a release **Impressionist Artworks v1.0** which contains the dataset images, the dataset csv with and without clusters, and weights of a pretrained StyleGAN. Unpack the images and the csv with the clusters into the root directory of the repository. The main directory should now contain a directory called `impressionist` and a file `filtered_impressionist_clusters.csv`. The weights file `ada_stylegan_64_more_channels.pth` should be saved in a subdirectory of the root directory called `weights`
+The GitHub repository includes a release called **Impressionist Artworks v1.0**, which contains the dataset images, the dataset CSV files (with and without clusters), and the weights for a pretrained StyleGAN.
+
+Unpack the images and the dataset CSV with the clusters into the root directory of the repository. After extracting, the root directory should contain:
+- a folder named `impressionist`
+- a file named `filtered_impressionist_clusters.csv`
+
+The weights file `ada_stylegan_64_more_channels.pth` should be placed in a subdirectory of the repository root called `weights`.
 
 ### Running the preprocessing K-Means script
-Keep in mind, that it isn't required to run the preprocessing script. Its result - `filtered_impressionist_clusters.csv` - is already available under the GitHub release. If you still want to do it however, you can do the following. Download `filtered_impressionist_noclusters.csv` from the GitHub release and put it in the `preprocessing` directory. Then run the following commands:
+Running the preprocessing script is **optional**. Its output (`filtered_impressionist_clusters.csv`) is already available in the GitHub release. If you still want to generate it yourself, download `filtered_impressionist_noclusters.csv` from the GitHub release, place it in the preprocessing directory, and run:
 
 ```
 conda activate impressionist-stylegan
@@ -52,20 +63,26 @@ python similarity_clustering.py
 ```
 
 ### Running the StyleGAN Training Notebook
-Run the individual notebook cells. At the end of the notebook there is a block with which you can save your new StyleGAN weights in the `weights` directory. The last section loads the weights of my pretrained StyleGAN (available under `ada_stylegan_64_more_channels.pth` in the **Impressionist Artworks v1.0** GitHub release) and produces a grid image similar to the one found in `model/results`.
+Execute the `ImpressionistTrain.ipynb` notebook cell-by-cell. Near the end of the notebook, you’ll find a section that lets you save your newly trained StyleGAN weights to the `weights` directory.
+
+The final section loads my pretrained StyleGAN weights (`ada_stylegan_64_more_channels.pth`, available in the **Impressionist Artworks v1.0** GitHub release) and generates an image grid similar to the one in **model/results**.
 
 ## Summary
+In this project, I implemented a full StyleGAN pipeline to generate images of impressionist artworks. Due to GPU limitations, I trained the model only up to a resolution of **64×64**, and a full training run required **over 24 hours**.
+
+If you’d like to try the StyleGAN on a simpler dataset, run the `MNISTTrain.ipynb` notebook. It trains on MNIST and reaches visually convincing results much faster.
+
 ### Error Metric: Frechet Inception Distance (FID)
-I used the FID metric to calculate the distance between the distribution of the real images and the distribution of the generated images. FID is the norm to evaluate the quality of GANs and has been used in nearly all papers.
+I used the Frechet Inception Distance (FID) to measure how closely the distribution of generated images matches the distribution of real images. FID is a standard metric for evaluating GAN image quality and is used in most GAN-related research.
 
 ### Error Metric Target: 40
-I wanted to reach an FID of at most 40 (smaller FID values are better).
+My goal was to achieve an FID of 40 or lower (smaller values indicate better results). Selecting a suitable target was challenging because FID can produce higher (worse) values for equally good-looking samples when the underlying dataset is relatively small, as in my case.
 
 ### Achieved FID Value: 40.38
-The EMA Generator achieved this FID value at the end of the model training.
+By the end of training, the EMA Generator achieved an FID of 40.38. You can see images generated by this Generator in `model/results/grid_more_channels_ema.png`.
 
 ### Work Breakdown
-Here is a breakdown of the hours I spent on the individual tasks specified in the original project proposal. It is of this format: \
+Below is a breakdown of the hours I spent on the individual tasks specified in the original project proposal. It is of this format: \
 TASK: HOURS_SPENT (INCREASE_COMPARED_TO_ORIGINAL_ESTIMATE)
 
 Researching project ideas: 2h \
@@ -80,10 +97,11 @@ Building an application to present the results: NOT DONE YET \
 Preparing the final report and presentation: NOT DONE YET 
 
 ## Dataset
-I collected a dataset of 23328 impressionist artworks. Originally, I wanted to use mostly museum APIs to do this, but found out, that they don't contain enough artworks to build a large dataset. Therefore, I switched to collecting them from WikiArt [1]. This was very convenient since WikiArt offers text lists of all artworks belonging to a specific style, along with some metadata like the genre of the artwork. \
-In early training runs, I noticed that the StyleGAN had problems in generating good-looking images. I hypothesized that this was due to the high variance in the individual artworks of the dataset. For example, the dataset contains portraits of people as well as landscape paintings - two very different genres. Therefore I decided to use K-Means clustering to separate the dataset into clusters, where each cluster contains images that are visually and semantically similar to one another. This improved the quality of the generated images drastically.
+I collected a dataset of 23,328 impressionist artworks. My original plan was to rely primarily on museum APIs, but I found that they did not provide enough works to build a dataset of the desired size. As a result, I switched to collecting the images from WikiArt [1]. This approach was especially convenient because WikiArt provides text lists of artworks for a given style, along with metadata such as the artwork’s genre.
 
-The final dataset is found in the file `filtered_impressionist_clusters.csv`. It contains the following colums: \
+During early training runs, I observed that the StyleGAN struggled to produce convincing images. I hypothesized that this was caused by the high variance within the dataset—for example, it includes both portraits and landscape paintings, which differ substantially in composition and structure. To reduce this variance, I applied K-Means clustering to partition the dataset into groups of visually and semantically similar images. This change significantly improved the quality of the generated results.
+
+The final dataset is found in the file `filtered_impressionist_clusters.csv`. It contains the following columns: \
 Id, Author, Style, Title, Date, Genre, Image_urls, URL, Cluster_ind \
 **Id**... The ID of the dataset entry \
 **Author**... The author of the artwork \
@@ -96,19 +114,19 @@ Id, Author, Style, Title, Date, Genre, Image_urls, URL, Cluster_ind \
 **Cluster_ind**... The ID of the cluster the image was grouped into during K-Means clustering
 
 ## Model Architecture
-I created a StyleGAN [2], as described in the original paper, but with some changes described in later architectures to improve the performance of my model on the dataset. Here, I will list my design choices and why they have been chosen.
+I implemented a StyleGAN [2] largely following the original paper, but incorporated several modifications introduced in later variants to improve performance on my dataset. Below, I summarize the main design choices and the motivation behind each one.
 
 ### Adaptive Discriminator Augmentation (ADA)
-I noticed that, especially after clustering and therefore decreasing the effective dataset size, my model was prone to discriminator overfitting. Therefore I created an ADA mechanism to recognize discriminator overfitting and perform data augmentation if it is detected. ADA is a mechanism, that is used in later StyleGAN architectures, such as StyleGAN2-ADA [3].
+I observed that the discriminator tended to overfit—especially after clustering, which effectively reduces the dataset size per cluster. To address this, I implemented Adaptive Discriminator Augmentation (ADA) to detect signs of discriminator overfitting and apply data augmentation when necessary. ADA is a technique used in later StyleGAN architectures, such as StyleGAN2-ADA [3].
 
 ### Loss Function: Non-Saturating Logistic Loss (with R1 penalty for the discriminator)
-In early training runs I used the Wasserstein Loss function, but after I implemented ADA, I had to switch to a loss function which is centered around 0, since ADA recognizes discriminator overfitting by the signage of the score on the real images. Non-Saturating Logistic Loss satisfies this property.
+In early training runs, I used the Wasserstein loss. However, after introducing ADA, I needed a loss formulation whose discriminator scores are centered around zero, since ADA detects overfitting based on the sign of the discriminator output on real images. The non-saturating logistic loss satisfies this requirement, and I additionally applied an R1 penalty to regularize the discriminator.
 
 ### Exponential Moving Average (EMA) Generator
-I used a EMA Generator, whose weights are a moving average of the Generator weights. This makes the EMA Generator weight-changes smoother than those for the original Generator, resulting in better overall performance. 
+I maintained an EMA version of the Generator, where the weights are computed as a moving average of the main Generator’s weights. This produces smoother weight updates and typically yields more stable and higher-quality outputs than using the raw Generator weights alone.
 
 ### Hyperparameters
-I based my hyperparameter selection on hyperparameters used in official StyleGAN implementations.
+I selected hyperparameters based on those used in official StyleGAN implementations.
 
 
 ## Performing Sanity Check Tests
