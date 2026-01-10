@@ -4,6 +4,8 @@ This demo application lets you generate your own impressionist artworks by calli
 ## Running the application
 
 ### Running the backend
+You need to paste the `ada_stylegan_64_more_channels.pth` and `RealESRGAN_x4plus.pth` weight files in the `backend/backend_model/weights` directory. All of the mentioned weights are available in the **Impressionist Artworks v1.0** GitHub release.
+
 ```
 cd backend
 conda env create -f environment_demo_app.yml

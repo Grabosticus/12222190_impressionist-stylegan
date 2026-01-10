@@ -3,3 +3,4 @@ weights/
 impressionist.zip
 MNIST/
 impressionist_test/
+**/node_modules/

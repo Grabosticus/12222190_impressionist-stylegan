@@ -85,14 +85,14 @@ export default function Footer() {
             
             <div className="space-y-2">
               <a 
-                href="#" 
+                href="https://github.com/Grabosticus/12222190_impressionist-stylegan/blob/main/Impressionist_StyleGAN_Report.pdf" 
                 className="flex items-center gap-2 text-purple-300 hover:text-white transition-colors group"
               >
                 <ExternalLink className="size-4 group-hover:translate-x-1 transition-transform" />
                 <span className="text-sm">Read the technical report</span>
               </a>
               <a 
-                href="#" 
+                href="https://github.com/Grabosticus/12222190_impressionist-stylegan/tree/main" 
                 className="flex items-center gap-2 text-purple-300 hover:text-white transition-colors group"
               >
                 <ExternalLink className="size-4 group-hover:translate-x-1 transition-transform" />
