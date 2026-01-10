@@ -1,0 +1,18 @@
+name: demo_application
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - llvmlite
+  - numba
+  - numpy<2
+  - fastapi
+  - uvicorn
+  - pillow
+  - pytorch
+  - pip:
+      - "numpy<2"
+      - "uvicorn[standard]"
+      - basicsr
+      - realesrgan
