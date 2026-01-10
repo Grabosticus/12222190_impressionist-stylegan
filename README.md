@@ -51,7 +51,7 @@ Unpack the images and the dataset CSV with the clusters into the root directory 
 - a folder named `impressionist`
 - a file named `filtered_impressionist_clusters.csv`
 
-The weights file `ada_stylegan_64_more_channels.pth` should be placed in a subdirectory of the repository root called `weights`.
+The weights file `ada_stylegan_64_more_channels.pth` should be placed in the directory `model/weights`.
 
 ### Running the preprocessing K-Means script
 Running the preprocessing script is **optional**. Its output (`filtered_impressionist_clusters.csv`) is already available in the GitHub release. If you still want to generate it yourself, download `filtered_impressionist_noclusters.csv` from the GitHub release, place it in the preprocessing directory, and run:
